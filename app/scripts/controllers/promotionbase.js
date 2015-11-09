@@ -118,9 +118,21 @@ angular.module('presellFrontendApp')
           return;
         }
       }
+
+      // $scope.promotion.enable = $scope.promotion.enable === 'true' ? true : false;
+      //
+      // // 储存到本地
+      // $localStorage.promotion = $scope.promotion;
+      // // 跳转到选择货物
+      // $location.path('/promotion/goods');
       // 服务端验证
       $scope.promotion.toolId = 2000;
-      httpService.post('aa/validateByStep', {step: 1, activity: $scope.promotion})
+      $scope.promotion.step = 1;
+      var pm = angular.copy($scope.promotion);
+      delete pm.reqParams.items;
+      delete pm.createTime;
+      delete pm.lastModify;
+      httpService.post('aa/validateByStep', pm)
         .then(function(res) {
           if (res) {
             $scope.promotion.enable = $scope.promotion.enable === 'true' ? true : false;

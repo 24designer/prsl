@@ -11,8 +11,8 @@ angular.module('presellFrontendApp')
   .service('httpService', function ($http, $q, authService, $rootScope, usSpinnerService) {
     // var baseUrl = 'http://121.40.211.233:8867/ump/';
     // var baseUrl = 'http://114.215.197.33:8867/ump/';
-    var baseUrl = 'http://10.37.116.225:8080/hitao-ump-center/';
-    // var baseUrl =  'http://ump.hitao.top/ump/'
+    // var baseUrl = 'http://10.37.116.228:8080/hitao-ump-center/';
+    var baseUrl =  'http://ump.hitao.top/ump/'
     this.post = function(method, params) {
       var url = baseUrl + method;
       var d = $q.defer();

@@ -21,7 +21,7 @@ angular.module('presellFrontendApp')
            + ':' + thisTime.getMinutes() + ':' + thisTime.getSeconds();
     };
 
-    var url = 'http://115.29.209.148/index.php?method=upload_image&appkey=HTML65W23K7&sign_method=1&v=1&timestamp=' + fulltime();
+    var url = 'http://pubapi.hitao.top/index.php?method=upload_image&appkey=H5KKJ6D3SD5&sign_method=1&v=1&timestamp=' + fulltime();
 
     $scope.ok = function (file) {
       $scope.formUpload = true;

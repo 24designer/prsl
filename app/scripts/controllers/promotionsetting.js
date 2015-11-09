@@ -106,7 +106,18 @@ angular.module('presellFrontendApp')
 
 
     // 下一步
-    $scope.nextStep = function() {
+    $scope.nextStep = function(form) {
+      if (form.$invalid) {
+        for (var i = 0; i < $scope.limits.length; i++) {
+          if ($scope.limits[i].belongUnitePrice) continue;
+          for (var j = 0; j < $scope.channels.length; j++) {
+            var n = $scope.channels[j] + 'PromotionPrice' + i;
+            form[n].$dirty = true;
+          }
+        }
+        return;
+      }
+
       if ($scope.limits.length === 0) {
         alert('没有参加活动的商品');
         return;

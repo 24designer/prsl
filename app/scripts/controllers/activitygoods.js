@@ -71,7 +71,7 @@ angular.module('presellFrontendApp')
       if (goodids.length > 0) {
         httpService.request('aa/getGoodsByIds', {goodsIds: goodids.join(',')})
           .then(function(response) {
-            $scope.selecteds = response;
+            $scope.selecteds = response ? response : [];
             search();
           });
       }
@@ -168,10 +168,10 @@ angular.module('presellFrontendApp')
 
       var ids = [];
       for (var i = 0; i < $scope.selecteds.length; i++) {
-        ids.push($scope.selecteds[i].product_id);
+        ids.push({id:$scope.selecteds[i].product_id, name: $scope.selecteds[i].product_name});
       }
 
-      httpService.post('aa/validateByStep', {step: 2, activity: $localStorage.activity.id, productIds: ids.join(',')})
+      httpService.post('aa/validateByStep', {step: 2, activity: $localStorage.activity.id, toolId: 12000, reqParams:{items: ids}})
         .then(function(res) {
           if (res) {
             $localStorage.goods = $scope.selecteds;

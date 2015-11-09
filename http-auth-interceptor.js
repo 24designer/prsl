@@ -96,6 +96,10 @@
                 $rootScope.$broadcast('event:system-error');
                 return false;
                 break;
+              case -1:
+                $rootScope.$broadcast('event:params-error', '网络出现错误......');
+                return false;
+                break;
             }
           }
           // otherwise, default behaviour

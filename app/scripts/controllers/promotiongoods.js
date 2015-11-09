@@ -20,7 +20,7 @@ angular.module('presellFrontendApp')
     $scope.module = 'promotion'; //当前的模块
 
     // 导航
-    $scope.navs = [{name: '限时促销', active: true}, {name: '活动列表', href: '/'}, {name: '编辑基本信息', href: '/promotion/base/c'}, {name: '选择商品', active: true}];
+    $scope.navs = [{name: '限时促销', active: true}, {name: '活动列表', href: '/promotion/'}, {name: '编辑基本信息', href: '/promotion/base/c'}, {name: '选择商品', active: true}];
 
     // 搜索条件
     $scope.good = {orderBy: 'add_time', orderDesc: true, pageIndex: 1, pageSize: 20 };
@@ -73,7 +73,7 @@ angular.module('presellFrontendApp')
       if (goodids.length > 0) {
         httpService.request('aa/getGoodsByIds', {goodsIds: goodids.join(',')})
           .then(function(response) {
-            $scope.selecteds = response;
+            $scope.selecteds = response ? response : [];
             search();
           });
       }
@@ -166,11 +166,16 @@ angular.module('presellFrontendApp')
         alert('未选择商品');
         return;
       }
+
+
+      // $localStorage.goods = $scope.selecteds;
+      // delete $localStorage.accessedPromotionThree;
+      // $location.path('/promotion/setting');
       var ids = [];
       for (var i = 0; i < $scope.selecteds.length; i++) {
-        ids.push($scope.selecteds[i].product_id);
+        ids.push({id:$scope.selecteds[i].product_id,name: $scope.selecteds[i].product_name});
       }
-      httpService.post('aa/validateByStep', {step: 2, id: $localStorage.promotion.id, productIds: ids.join(',')})
+      httpService.post('aa/validateByStep', {step: 2, toolId: 2000, activity: $localStorage.promotion.id, reqParams:{items: ids}})
         .then(function(res) {
           if (res) {
             $localStorage.goods = $scope.selecteds;

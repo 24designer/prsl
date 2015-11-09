@@ -158,7 +158,12 @@ angular.module('presellFrontendApp')
       }
       // 服务端验证
       $scope.activity.toolId = 12000;
-      httpService.post('aa/validateByStep', {step: 1, activity: $scope.activity})
+      $scope.activity.step = 1;
+      var avt = angular.copy($scope.activity);
+      delete avt.reqParams.items;
+      delete avt.createTime;
+      delete avt.lastModify;
+      httpService.post('aa/validateByStep', avt)
         .then(function(res) {
           if (res) {
             $scope.activity.enable = $scope.activity.enable === 'true' ? true : false;
