@@ -1,0 +1,256 @@
+@mixin login_bg {
+  background-color:	#85D8CE;
+  background: -webkit-linear-gradient(90deg, #85D8CE 10%, #085078 50%); /* Chrome 10+, Saf5.1+ */
+  background: -moz-linear-gradient(90deg, #85D8CE 10%, #085078 50%); /* FF3.6+ */
+  background: -ms-linear-gradient(90deg, #85D8CE 10%, #085078 50%); /* IE10 */
+  background: -o-linear-gradient(90deg, #85D8CE 10%, #085078 50%); /* Opera 11.10+ */
+  background: linear-gradient(90deg, #85D8CE 10%, #085078 50%); /* W3C */
+}
+
+.loading-app .loading-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index:9;
+
+  @include login_bg;
+
+}
+
+.login-holder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 25% 15%;
+  @include login_bg;
+	color:#eee;
+  display: none;
+}
+
+// 活动的进度
+.activity-process {
+  @import 'arrow';
+}
+
+.table-sorter .btn:focus{
+    outline: none;
+    border: 0;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+}
+
+
+// 重写bootstrap样式
+.input-group .form-control:last-child {
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+
+.input-group-addon {
+  border: 0;
+  background: none;
+}
+
+.form-horizontal .radio-inline {
+  padding-top: 2px;
+  padding-left: 20px;
+}
+
+.form-horizontal .checkbox-inline {
+  padding-top: 4px;
+}
+
+.well {
+  padding: 0;
+}
+
+.page-header {
+  margin: 20px 0 10px;
+}
+
+.glyphicon-remove-circle{
+  color: #df471e;
+}
+
+.glyphicon-remove-circle:hover , .glyphicon-ok-circle:hover {
+  cursor: pointer;
+}
+
+.glyphicon-ok-circle{
+  color: #6C6E6C;
+}
+
+.promotion-tb .custom-row >div{
+  padding: 5px 15px;
+  line-height: 1.5;
+  height: 70px;
+  vertical-align: middle;
+}
+
+.custom-row{
+
+  >.col-md-4{
+    width: 15%;
+  }
+
+  >.col-md-8{
+    width: 30%;
+  }
+  >.col-md-2{
+    width: 10%;
+  }
+  >.col-md-6{
+    width: 20%;
+  }
+  >.col-md-1 {
+    width: 5%;
+  }
+  >.col-md-10 {
+    width: 35%;
+  }
+}
+
+
+
+.presell-content, .activity-goods {
+  .row:nth-child(n+2) {
+      margin-top: 10px;
+  }
+}
+
+
+.btn-mx{
+  font-size: 30px;
+  font-weight: 100;
+}
+
+.setting-table tbody tr:nth-child(even) td{
+  border-top: 0;
+  padding: 0 5px;
+}
+
+.presell-setting {
+  .setting-table .numberic-input input{
+    width: 50px;
+  }
+  .image-uploader{
+    min-width: 150px;
+
+    img:hover{
+      cursor: pointer;
+    }
+
+    ul{
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      color: #959595;
+      li{
+        overflow: hidden;
+        width: 30px;
+
+        .fa{
+          font-size: 28px;
+          width: 100%;
+          text-align: center;
+        }
+      }
+
+      li.active{
+        color: #000;
+      }
+      li:hover{
+        color: #575757;
+      }
+    }
+  }
+}
+
+.presell-finish {
+
+  h3 {
+    text-align: center;
+    margin-top: 50px;
+  }
+
+  ul {
+    width: 250px;
+    margin: 20px auto;
+    li {
+      list-style-type: decimal;
+      margin-top: 10px;
+      font-size: 1.5em;
+    }
+
+  }
+}
+
+
+canvas {
+  background-color: #f3f3f3;
+  -webkit-box-shadow: 3px 3px 3px 0 #e3e3e3;
+  -moz-box-shadow: 3px 3px 3px 0 #e3e3e3;
+  box-shadow: 3px 3px 3px 0 #e3e3e3;
+  border: 1px solid #c3c3c3;
+  height: 100px;
+  margin: 6px 0 0 6px;
+}
+
+.form {
+  :invalid {
+    box-shadow: none;
+  }
+
+  :-moz-submit-invalid {
+    box-shadow: none;
+  }
+
+  :-moz-ui-invalid {
+    box-shadow:none;
+  }
+
+  .invalid{
+    border-color: #c63c3c;
+  }
+
+  input:valid {
+    background-color: #ddffdd;
+  }
+}
+
+.sortable-ghost {
+  background: red;
+}
+
+.sortable-chosen {
+  background: rgba(#345ddb, 0.6);
+}
+//
+// .multiSelect img {
+//   max-width: 50px;
+//   max-height: 50px;
+// }
+
+.mytimepicker {
+  height: 30px;
+  input{
+    width: 80% !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  i.glyphicon-calendar{
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border: 1px solid #ccc;
+    border-left: 0;
+    margin-top: -1px;
+  }
+}

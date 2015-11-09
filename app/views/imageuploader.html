@@ -1,0 +1,15 @@
+<div class="row image-uploader">
+    <div class="col-md-3">
+      <ul>
+        <li ng-repeat="m in methods" ng-class="{'active': m==cpicture}">
+          <i class="fa"
+          ng-class="{'fa-desktop': m == 'pc', 'fa-mobile': m=='app', 'fa-html5': m=='h5'}"
+          ng-click="setPicture(m, $index)"></i>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-8">
+      <img ng-src="{{ presell[lcpicture + 'ImgUrl1']?presell[lcpicture + 'ImgUrl1']:'/images/default.png' }}" width="100%"
+      ng-click="open(lcpicture)"/>
+    </div>
+</div>

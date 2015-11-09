@@ -1,0 +1,190 @@
+<div class="activity-base">
+  <form class="form form-horizontal" name="form" novalidate ng-if="activity">
+    <div class="form-group">
+      <div class="input-group col-md-5 col-md-offset-3">
+        <span class="input-group-addon"><small class="text-danger">*</small>活动名称</span>
+        <input type="text" class="form-control"
+          required
+          name="name"
+          maxlength="25"
+          ng-model="activity.name"
+          placeholder="最多输入25个字符"
+          ng-class="{true: 'invalid'}[form.name.$invalid && form.name.$dirty]"
+          />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group  col-md-5 col-md-offset-3">
+        <span class="input-group-addon"><small class="text-danger">*</small>活动时间</span>
+        <div class="dropdown mytimepicker">
+          <input type="text"
+            class="form-control input-sm"
+            placeholder="开始时间"
+            required
+            name="startTime"
+            ng-model="activity.startTime"
+            ng-class="{true: 'invalid'}[form.startTime.$invalid && form.startTime.$dirty]">
+          <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#"
+             href="#">
+            <i class="glyphicon glyphicon-calendar"></i>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <datetimepicker data-ng-model="activity.startTime" data-on-set-time="onsetTime(newDate, oldDate, 'startTime')"
+                              data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minuteStep: 1 }"></datetimepicker>
+          </ul>
+        </div>
+
+        <span class="input-group-addon">至</span>
+
+        <div class="dropdown mytimepicker">
+            <input type="text"
+              class="form-control input-sm"
+              placeholder="结束时间"
+              required
+              name="endTime"
+              ng-model="activity.endTime"
+              ng-class="{true: 'invalid'}[form.endTime.$invalid && form.endTime.$dirty]">
+          <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#"
+             href="#">
+             <i class="glyphicon glyphicon-calendar"></i>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+              <datetimepicker data-ng-model="activity.endTime" data-on-set-time="onsetTime(newDate, oldDate, 'endTime')"
+                              data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minuteStep: 1 }"></datetimepicker>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="form-group" ng-show="invalidTimeInterval && form.endTime.$invalid && form.startTime.$invalid">
+      <div class="col-md-5 col-md-offset-3 text-center" >
+        <label class="well">
+          <span class="text-danger">结束时间必须大于开始时间</span>
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group  col-md-5 col-md-offset-3">
+        <span class="input-group-addon"><small class="text-danger">*</small>活动类型</span>
+        <label class="radio-inline">
+          <input type="radio" ng-model="activity.reqParams.actType" value="1"> 团购
+        </label>
+        <label class="radio-inline">
+          <input type="radio" ng-model="activity.reqParams.actType" value="2"> 预售
+        </label>
+      </div>
+    </div>
+    <div class="form-group" ng-show="activity.reqParams.actType == '2' || activity.reqParams.actType == 2">
+      <div class="input-group col-md-5 col-md-offset-3">
+        <span class="input-group-addon"><small class="text-danger">*</small>预售类型</span>
+        <label class="radio-inline">
+          <input type="radio" ng-model="activity.reqParams.payType" value="1" ng-disabled="activity.reqParams.actType == '1' || activity.reqParams.actType == 1"> 全款
+        </label>
+        <label class="radio-inline">
+          <input type="radio" ng-model="activity.reqParams.payType" disabled value="2"> 定金+尾款
+        </label>
+      </div>
+    </div>
+    <div class="form-group" ng-show="activity.reqParams.payType == 2 || activity.reqParams.payType == '2'">
+      <div class="input-group col-md-5 col-md-offset-3">
+        <span class="input-group-addon">尾款付款超时期限</span>
+        <input type="text" class="form-control" ng-model="activity.overdate">
+        <span class="input-group-addon">天   <small class="well">预售结束后X天自动关闭订单</small></span>
+      </div>
+    </div>
+    <div class="form-group" ng-show="activity.reqParams.actType == '2' || activity.reqParams.actType == 2">
+      <div class="input-group  col-md-5 col-md-offset-3">
+        <span class="input-group-addon control-label" ><small class="text-danger">*</small>发货时间</span>
+        <input type="text" class="form-control"
+          uib-datepicker-popup="{{ 'yyyy-MM-dd' }}"
+          ng-model="activity.reqParams.deliveryTime"
+          name="deliveryTime"
+          is-open="status.sdt"
+          min-date="minDate"
+          max-date="maxDate"
+          show-weeks="true"
+          close-text="Close"
+          ng-class="{true: 'invalid'}[form.deliveryTime.$invalid && form.deliveryTime.$dirty]"
+          ng-required="activity.reqParams.actType==2 || activity.reqParams.actType=='2'"  />
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="open('sdt')"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+      </div>
+    </div>
+    <div class="form-group" ng-show="invalidDeliveryTime">
+      <div class="col-md-5 col-md-offset-3 text-center" >
+        <label class="well">
+          <span class="text-danger">发货时间必须大于结束时间</span>
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group col-md-10 col-md-offset-3">
+        <span class="input-group-addon"><small class="text-danger">*</small>活动渠道</span>
+        <label class="checkbox-inline" ng-repeat="item in ['pc', 'app', 'h5']">
+          <input type="checkbox"
+            value="{{$index + 1}}"
+            ng-checked="activity.channel.indexOf($index + 1) > -1"
+            ng-click="toggleActivityWay($index + 1)">
+            {{ item | uppercase }}
+        </label>
+        <label class="well well-sm checkbox-inline">
+          <span ng-hide="invalidChannel">注：若勾选两个以上的渠道，则表示参加活动的商品在多个渠道都是一样的配置。</span>
+          <span ng-show="invalidChannel" ng-class="{'text-danger': invalidChannel == true}">未选择活动渠道</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="input-group col-md-5 col-md-offset-3">
+        <span class="input-group-addon control-label" >活动说明&nbsp</span>
+        <textarea class="form-control" id="desc" ng-model="activity.info" placeholder="最多可输入100个字符" rows="3"></textarea>
+      </div>
+    </div>
+<!--
+    <div class="form-group">
+      <div class="input-group col-md-5 col-md-offset-3">
+        <span class="input-group-addon control-label" >活动结束后</span>
+        <label class="checkbox-inline">
+          <input type="checkbox" ng-model="activity.reqParams.onActEnd"> 下架预售商品
+        </label>
+      </div>
+    </div> -->
+
+    <div class="form-group">
+      <div class="input-group col-md-5 col-md-offset-3">
+        <span class="input-group-addon control-label" ><small class="text-danger">*</small>活动状态</span>
+        <label class="radio-inline">
+          <input type="radio" ng-model="activity.enable" value="true"> 开启
+        </label>
+        <label class="radio-inline">
+          <input type="radio" ng-model="activity.enable" value="false"> 关闭
+        </label>
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
+      <div class="input-group  col-md-3 col-md-offset-3">
+        <span class="input-group-addon control-label" >发布时间</span>
+        <input type="text" class="form-control"
+          uib-datepicker-popup="{{ 'yyyy/MM/dd' }}"
+          ng-model="activity.reqParams.releaseTime"
+          name="releaseTime"
+          is-open="status.pdt"
+          min-date="minDate"
+          max-date="maxDate"
+          show-weeks="true"
+          close-text="Close"
+          readonly
+          />
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default" ng-click="open('pdt')"><i class="glyphicon glyphicon-calendar"></i></button>
+        </span>
+      </div>
+    </div> -->
+    <div class="form-group">
+      <div class="input-group col-md-3 col-md-offset-3 text-center">
+        <button type="submit" ng-click="nextStep(form)" class="btn btn-sm btn-info">下一步: 选择商品</button>
+      </div>
+    </div>
+  </form>
+</div>

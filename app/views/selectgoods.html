@@ -1,0 +1,150 @@
+<div class="activity-goods">
+  <div class="row text-center">
+    <div class="col-md-3 col-md-offset-1">
+      <div class="input-group input-group-sm">
+        <strong>商品名称:</strong>
+         {{ prePageInfo.name }}
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group input-group-sm">
+        <strong>开始时间:</strong>
+        {{ prePageInfo.startTime }}
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="input-group input-group-sm">
+        <strong>结束时间:</strong>
+        {{ prePageInfo.endTime }}
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-md-3 col-md-offset-1">
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon">商品名称</span>
+        <input type="text" class="form-control" ng-model="good.goodsName" placeholder="商品名称">
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon" >商品Id</span>
+        <input type="text" class="form-control" ng-model="good.goodsId" integer placeholder="商品Id">
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon" >价格</span>
+        <input type="input" class="form-control" smart-float ng-model="good.startPrice" max-number="good.endPrice" placeholder="最低">
+        <span class="input-group-addon" >-</span>
+        <input type="input" class="form-control" smart-float min-number="good.startPrice" ng-model="good.endPrice" placeholder="最高">
+        <span class="input-group-addon" >元</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-md-offset-1">
+      <div class="input-group input-group-sm">
+        <span class="input-group-addon control-label" >分类</span>
+        <select
+          style="margin-top: 5px;"
+          ng-model="cates.f"
+          ng-options="first.cat_name for first in firstLevels track by first.cat_id"
+          ng-change="changeItem('f')">
+          <option value="">-- 一级分类 --</option>
+        </select>
+
+        <select
+          style="margin-left: 5px;"
+          ng-model="cates.s"
+          ng-options="f.cat_name for f in secondLevels track by f.cat_id"
+          ng-change="changeItem('s')"
+          >
+          <option value="">-- 二级分类 --</option>
+        </select>
+
+        <select ng-model="cates.t"
+          style="margin-left: 5px;"
+          ng-options="f.cat_name for f in thirdLevels track by f.cat_id"
+          ng-change="changeItem('t')">
+          <option value="">-- 三级分类 --</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-3 text-center">
+      <button type="button" class="btn btn-info" ng-click="search()">搜索</button>
+      <a href="/{{module}}/base/c" class="btn btn-info">
+        <i class="fa fa-angle-double-left"></i>上一步
+      </a>
+      <button type="button" class="btn btn-info" ng-click="nextStep()">
+        下一步 <i class="fa fa-angle-double-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="goods-list row">
+    <div class="col-md-10 col-md-offset-1">
+      <table class="table table-condensed table-hover">
+        <thead>
+          <tr>
+            <td colspan="4">
+              <table-sorter sorts="sorts" sort="good.orderBy" sort-by="sortBy(sort)"></table-sorter>
+            </td>
+            <td colspan="2">
+              <button type="button" class="btn btn-info" ng-click="isCollapsed = !isCollapsed"><span ng-show="isCollapsed">展开</span><span ng-hide="isCollapsed">隐藏</span>已选择({{selecteds.length}})</button>
+            </td>
+            <td >
+              <button type="button" class="btn btn-link" ng-click="toggleAll()">全选</button>
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <!--  嵌套的已选择表格 -->
+          <tr uib-collapse="isCollapsed">
+            <td colspan="6" ng-show="selecteds.length > 0">
+              <div class="panel panel-primary">
+                <div class="panel-heading text-center">已选择商品 <button type="button" class="btn btn-danger" ng-click="removeAll()">清除所有</button></div>
+                <table class="table table-condensed table-hover">
+                  <tbody>
+                    <tr ng-repeat="g in selecteds" class="success">
+                      <td>{{g.product_id}}</td>
+                      <td><img src="{{g.imgurl}}" width="30px" height="30px" /></td>
+                      <td>{{g.product_name}}</td>
+                      <td>{{g.cat_name}}</td>
+                      <td><span class="text-danger">￥{{g.sale_price}}</span></td>
+                      <td>{{g.quantity}}件</td>
+                      <td><span class="glyphicon btn-mx glyphicon-remove-circle" ng-click="removeOne(g, $index)"></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr ng-repeat="g in searchResult.list" ng-if="searchResult.list">
+            <td>{{g.product_id}}</td>
+            <td><img src="{{g.imgurl}}" width="30px" height="30px" /></td>
+            <td>{{g.product_name}}</td>
+            <td>{{g.cat_name}}</td>
+            <td><span class="text-danger">￥{{g.sale_price}}</span></td>
+            <td>{{g.quantity}}件可售</td>
+            <td><span class="glyphicon btn-mx" ng-class="{false: 'glyphicon-ok-circle', true: 'glyphicon-remove-circle', 'undefined': 'glyphicon-ok-circle'}[g.selected]" ng-click="toggleOne(g)"></span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="9">
+                <uib-pagination  class="pagination-sm" previous-text="上一页" next-text="下一页" total-items="searchResult.totalCount" ng-model="good.pageIndex" max-size="20" items-per-page="good.pageSize" ng-change="search()"></uib-pagination>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

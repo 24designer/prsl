@@ -1,0 +1,182 @@
+<div class="presell-setting row">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <div class="row text-center">
+          <div class="col-md-3">
+            <div class="input-group input-group-sm">
+              <strong>活动名称:</strong>
+               {{ promotion.name }}
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group input-group-sm">
+              <strong>开始时间:</strong>
+              {{ promotion.startTime }}
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="input-group input-group-sm">
+              <strong>结束时间:</strong>
+              {{ promotion.endTime }}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5">
+            <h5>参加本次活动的数量为<span class="badge">{{ limits.length }}</span></h5>
+          </div>
+          <div class="col-md-7 text-right">
+            <a href="/promotion/goods" class="btn btn-info btn-sm">
+              <i class="fa fa-angle-double-left"></i>上一步
+            </a>
+            <button type="button" class="btn btn-info btn-sm"  ng-click="nextStep()">
+              完成 <i class="fa fa-angle-double-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <table class="table table-condensed table-hover setting-table promotion-tb">
+        <thead>
+          <tr>
+            <td style="width: 5%;"> <input type="checkbox" name="allToggled" ng-checked="allToggled" ng-model="allToggled" ng-change="toggleAll(allToggled)"></td>
+            <td style="width:10%">goods_id</td>
+            <td colspan="2" style="width: 30%;">商品</td>
+            <td style="width: 14%;">销售价格</td>
+            <td style="width: 12%;">可用库存</td>
+            <td style="width: 18%;">促销价格</td>
+            <td style="width: 10%;">操作</td>
+          </tr>
+        </thead>
+        <tbody ng-sortable>
+          <tr ng-repeat="p in pagination.items">
+            <!-- 这里为什么要这么干? 因为需要拖拽排序.我才这么干 干完了又说不要了 懒得改回去了 -->
+            <td colspan="8">
+              <div class="row custom-row">
+                <div class="col-md-1">
+                  <input type="checkbox" ng-model="p.belongUnitePrice" ng-click="toggle()">
+                </div>
+                <div class="col-md-2">
+                  {{p.id}}
+                </div>
+                <div class="col-md-2">
+                  <img src="{{p.imgurl}}" style="max-width: 50px;"/>
+                </div>
+                <div class="col-md-6">
+                  {{ p.name }}
+                </div>
+                <div class="col-md-4" style="color: red;">
+                  <i class="fa fa-jpy"></i> <strong>{{ p.price }}</strong>
+                </div>
+                <div class="col-md-2 numberic-input">
+                  {{ p.store }}
+                </div>
+                <div class="col-md-6 numberic-input">
+                  <p ng-repeat="way in channels">
+                     <strong class="text-info">{{way | uppercase}}:</strong>
+                     <input type="text"
+                        ng-model="p[way + 'PromotionPrice']"
+                        ng-disabled="p.belongUnitePrice"
+                        smart-float>
+                  </p>
+                </div>
+                <div class="col-md-1">
+                  <span class="glyphicon btn-mx glyphicon-remove-circle" ng-click="removeOne($index)"></span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12" ng-init="collapese=''">
+                  <button type="button" class="btn btn-link btn-sm" ng-click="collapese = collapese == p.id ? '' : p.id;getproducts(p.id)">
+                    <span class="glyphicon " ng-class="{true: 'glyphicon-minus', false: 'glyphicon-plus'}[collapese==p.id]"  aria-hidden="true"></span> 查看货品
+                  </button>
+                  <div uib-collapse="collapese!=p.id">
+                    <table class="table">
+                      <tr>
+                        <td>product_id</td>
+                        <td>规格/规格值</td>
+                        <td>销售价</td>
+                        <td>可用库存</td>
+                      </tr>
+                      <tr ng-repeat="pro in products[p.id]" class="info">
+                        <td>{{pro.product_id}}</td>
+                        <td>{{pro.product_sn}}</td>
+                        <td>{{pro.sale_price}}</td>
+                        <td>{{pro.quantity}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">
+              <uib-pagination class="pagination-sm"  previous-text="上一页" next-text="下一页" total-items="pagination.total" ng-model="pagination.cpage" items-per-page="pagination.size" ng-change="pageChange()"></uib-pagination>
+            </td>
+            <td colspan="5">
+              <p style="margin: 20px 0;" class="numberic-input">
+                  每页显示<input type="text" min-number="pageMinSize" ng-model="pagination.size" integer>个商品
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <input type="checkbox" ng-checked="allToggled" name="allToggled"  ng-model="allToggled" ng-change="toggleAll(allToggled)">
+              <button class="btn btn-info btn-sm" ng-click="open()">批量设置</button>
+            </td>
+            <td colspan="4">
+              <a href="/promotion/goods" class="btn btn-info btn-sm">
+                <i class="fa fa-angle-double-left"></i>上一步
+              </a>
+              <button type="button" class="btn btn-info btn-sm"  ng-click="nextStep()">
+                完成 <i class="fa fa-angle-double-right"></i>
+              </button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+    </div>
+  </div>
+
+  <script type="text/ng-template" id="batchSetPrice.html">
+    <div class="modal-header">
+        批量设置促销价
+    </div>
+    <form name="form" novalidate>
+    <div class="modal-body">
+      <p>
+        <input type="radio" ng-model="type" value="0" name="type"> 取消批量
+      </p>
+      <p>
+        <input type="radio" name="type" value="1" ng-model="type"> 将所有商品设置成统一价格
+        <div ng-show="type==1">
+          <p ng-repeat="c in channels">
+            {{c | uppercase}} <input type="text" ng-required="type==1" smart-float ng-model="unitePrices['unite' + c + 'Price']" required>元
+          </p>
+        </div>
+
+      </p>
+      <p>
+        <input type="radio" name="type" value="2" ng-model="type"> 将所有的商品设置为销售价
+        <div ng-show="type==2">
+          <select ng-model="logic">
+            <option value="0"><strong>-</strong></option>
+            <option value="1"><strong>×</strong></option>
+          </select>
+          <span ng-show="logic=='0'"><input type="text" ng-required="type==2&&logic=='0'" smart-float ng-model="quota0">元</span>
+          <span ng-show="logic=='1'"><input type="text" ng-required="type==2&&logic=='1'" required smart-float max-number="maxNumber" min-number="minNumber" ng-model="quota1">(0-1之间)</span>
+        </div>
+      </p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-disabled="form.$invalid" ng-click="ok()">确定</button>
+        <button class="btn btn-info" type="button" ng-click="cancel()">取消</button>
+    </div>
+    </form>
+  </script>
+</div>

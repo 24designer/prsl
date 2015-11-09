@@ -1,0 +1,9 @@
+<div class="activity-process row text-center" ng-init="processs=['填写活动信息', '选择商品', '设置活动', '完成']">
+  <div class="col-md-2" ng-repeat="item in processs " ng-class="{'col-md-offset-2': $index == 0}">
+    <span class="right-arrow" ng-class="{'active-arrow': $index == process, 'actived-arrow': process > $index}">
+      <small ng-show="process > $index" class="glyphicon glyphicon-ok"></small>
+      <small>{{$index + 1 + '.'}}</small>
+      {{item}}
+    </span>
+  </div>
+</div>

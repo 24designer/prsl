@@ -1,0 +1,176 @@
+<div id="pageStructure">
+  <ng-include src="'views/breadcrumb.html'"></ng-include>
+  <div class="presell-content">
+    <!-- 搜索区域 -->
+    <div class="text-center" ng-show="isCollapsed">
+      <button type="button" class="btn btn-info btn-sm" ng-click="isCollapsed = !isCollapsed">展开搜索框</button>
+      <a href="/activity/base/0" class="btn btn-info btn-sm">添加活动</a>
+    </div>
+  	<div uib-collapse="isCollapsed">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon">活动名称</span>
+            <input type="text" class="form-control" ng-model="activity.name" placeholder="活动名称">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" >活动id</span>
+            <input type="text" class="form-control" ng-model="activity.id" placeholder="活动序号">
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" >货号(不可用)</span>
+            <input type="text" class="form-control" ng-model="activity.goodNumber" placeholder="货号">
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" >goods_id</span>
+            <input type="text" class="form-control" ng-model="activity.productId" placeholder="商品ID">
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon control-label" >发货时间(不可用)</span>
+            <input type="text" class="form-control"
+              uib-datepicker-popup instead="{{ 'yyyy-MM-dd' }}"
+              ng-model="activity.sdt"
+              is-open="status.sdt"
+              min-date="minDate"
+              max-date="maxDate"
+              show-weeks="true"
+              ng-required="true"
+              close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open('sdt')"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon">活动时间</span>
+            <input type="text" class="form-control"
+              uib-datepicker-popup instead="{{ 'yyyy-MM-dd' }}"
+              ng-model="activity.startDate"
+              is-open="status.bdt"
+              min-date="minDate"
+              max-date="maxDate"
+              show-weeks="true"
+              ng-required="true"
+              close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open('bdt')"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+            <span class="input-group-addon">至</span>
+            <input type="text" class="form-control"
+              uib-datepicker-popup instead="{{ 'yyyy-MM-dd' }}"
+              ng-model="activity.endDate"
+              is-open="status.edt"
+              min-date="minDate"
+              max-date="maxDate"
+              show-weeks="true"
+              ng-required="true"
+              close-text="Close" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open('edt')"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" >商品名称(不可用)</span>
+            <input type="text" class="form-control" ng-model="activity.goodName" placeholder="商品名称">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon control-label" >活动渠道</span>
+            <select class="form-control" ng-model="activity.channel" >
+              <option value="[1,2]">PC/APP</option>
+              <option value="[1]">PC</option>
+              <option value="[2]">APP</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" >活动状态</span>
+            <select class="form-control" ng-model="activity.status" >
+              <option value="">全部</option>
+              <option ng-repeat="status in ['即将开始', '进行中', '已关闭', '已结束']" value="{{$index==3?99:$index}}">{{status}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="input-group input-group-sm">
+            <span class="input-group-addon" >活动类型</span>
+            <select class="form-control" ng-model="activity.activityType" >
+              <option value="">全部</option>
+              <option value="1">团购</option>
+              <option value="2">预售</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3 text-right">
+          <button type="button" ng-click="search()" class="btn btn-sm btn-info">搜索</button>
+          <a href="/activity/base/0" class="btn btn-info btn-sm">添加活动</a>
+          <button type="button" ng-click="isCollapsed = !isCollapsed" class="btn btn-sm btn-info">收起</button>
+        </div>
+      </div>
+  	</div>
+    <!-- 搜索区域 end -->
+    <hr>
+    <!-- 搜索列表 -->
+    <div class="presell-list">
+      <table class="table table-condensed table-bordered table-hover text-center">
+        <thead>
+          <tr>
+            <td>序号</td><td style="width: 20%;">活动名称</td><td>活动渠道</td><td>商品数量</td>
+            <td>活动时间</td><td>活动类型</td><td>活动状态</td><td>创建人</td>
+            <td>操作</td>
+          </tr>
+        </thead>
+        <tbody ng-show="searchResult.list.length > 0">
+          <tr ng-repeat=" a in searchResult.list">
+            <td>{{a.id}}</td><td><a href="/activity/step3/{{a.id}}">{{a.name}}</a></td>
+            <td>
+              <span ng-repeat="c in a.channel">
+                {{c==1?'pc':c==2?'app':'h5'}}
+                <i ng-show="$index < a.channel.length -1">/</i>
+              </span>
+            </td>
+            <td>{{a.skuCount}}</td>
+            <td>{{ a.startTime | date:'yyyy-MM-dd HH:mm:ss' }} 至 {{ a.endTime| date:'yyyy-MM-dd HH:mm:ss'}}</td><td>{{a.activityType == 1 ? '团购' : a.activityType == '1' ? '团购' : '预售'}}</td>
+            <td >{{ a.statusDesc }}</td>
+            <td>{{a.createAcctountName}}</td>
+            <td>
+              <a href="/activity/base/{{a.id}}" class="btn btn-sm btn-link">编辑</a>
+              <!-- <a href="/process" ng-show="a.enable" class="btn btn-sm btn-link">效果</a> -->
+              <a ng-click="apply($index)" ng-hide="a.applyed" class="btn btn-sm btn-link">应用</a>
+              <!-- <a ng-click="delete($index)" class="btn btn-sm btn-link">删除</a> -->
+              <button type="button" ng-show="a.status===0" ng-click="start($index)" class="btn btn-sm btn-link">应用</button>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-show="searchResult">
+          <tr>
+            <td colspan="9">
+                <uib-pagination class="pagination-sm"  previous-text="上一页" next-text="下一页" total-items="searchResult.total" ng-model="activity.pageIndex" max-size="activity.pageSize" ng-change="search()"></uib-pagination>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <!-- 搜索列表 end -->
+  </div>
+</div>

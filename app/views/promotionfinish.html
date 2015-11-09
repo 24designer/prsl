@@ -1,0 +1,12 @@
+<div class="presell-finish text-center">
+  <h3>促销活动{{ id }}设置完成</h3>
+  <ul>
+    <li><a href="/promotion" ng-click="clearAutoRedirecting()">查看活动列表</a></li>
+    <li><a href="/promotion/base/0" ng-click="clearAutoRedirecting()">继续添加活动</a></li>
+    <li><a href="/promotion/base/{{id}}" ng-click="clearAutoRedirecting()">修改活动{{id}}</a></li>
+  </ul>
+
+  <p style="font-size: 1.2em; margin-top: 20px;">
+    3秒后自动跳转到限时促销列表页......
+  </p>
+</div>

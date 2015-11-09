@@ -1,0 +1,6 @@
+<ol class="breadcrumb text-center">
+   <li ng-repeat="item in navs" ng-class="{active: item.active}">
+     <any ng-if="item.active">{{item.name}}</any>
+     <a href="{{item.href}}" ng-if="!item.active">{{item.name}}</a>
+   </li>
+</ol>

@@ -1,0 +1,189 @@
+<div class="presell-setting row">
+  <div class="col-md-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <div class="row text-center">
+          <div class="col-md-3">
+            <div class="input-group input-group-sm">
+              <strong>活动名称:</strong>
+               {{ activity.name }}
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="input-group input-group-sm">
+              <strong>开始时间:</strong>
+              {{ activity.startTime }}
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="input-group input-group-sm">
+              <strong>结束时间:</strong>
+              {{ activity.endTime }}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5">
+            <h5>参加本次活动的数量为<span class="badge">{{ presells.length }}</span></h5>
+          </div>
+          <div class="col-md-7 text-right">
+            <a href="/activity/goods" class="btn btn-info btn-sm">
+              <i class="fa fa-angle-double-left"></i>上一步
+            </a>
+            <button type="button" class="btn btn-info btn-sm"  ng-click="nextStep()">
+              完成 <i class="fa fa-angle-double-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <script type="text/ng-template" id="uploadimg.html">
+        <div class="modal-header">
+            <h3 class="modal-title">{{method}}图片上传!</h3>
+        </div>
+        <form name="form" novalidate>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+                <input type="file" ngf-select  ng-model="picFile" name="file"  required accept="image/*" >
+            </div>
+            <div class="col-md-8">
+              <div class="alert alert-info">
+                上传前注意选择适合设备尺寸的图片......
+              </div>
+            </div>
+          </div>
+           <div ng-show="picFile" >
+            <img ngf-src="picFile" width="200px"/>
+           </div>
+          </div>
+          <div class="alert alert-success" ng-show="successed">
+              图片上传成功....
+          </div>
+          <div class="alert alert-danger" ng-show="failed">
+              图片上传失败....
+          </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-disabled="form.$invalid" ng-click="ok(picFile)">上传</button>
+            <button class="btn btn-info" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+        </form>
+      </script>
+
+      <table class="table table-condensed table-hover setting-table">
+        <thead class="text-center">
+          <tr>
+            <td style="width:15%">图片</td>
+            <td style="width:5%">goods_id</td>
+            <td style="width:15%">{{activity.reqParams.actType == 1 ? '团购' : '预售'}}标题</td>
+            <td style="width:15%;text-align: center;">预售价</td>
+            <td style="width:30%">限购设置</td>
+            <td style="width:10%">首页推荐</td>
+            <td style="width:5%">操作</td>
+          </tr>
+        </thead>
+        <tbody ng-sortable>
+          <tr ng-repeat="p in pagination.items">
+            <td colspan="7">
+              <div class="row custom-row">
+                <div class="col-md-4">
+                  <image-uploader methods="channels" presell="p" index="$index" modal="open(method, index)"></image-uploader>
+                </div>
+                <div class="col-md-1">
+                  <p style="margin-top: 20px">
+                     {{p.id}}
+                  </p>
+                </div>
+                <div class="col-md-6 text-center">
+                  <!-- 标题 -->
+                  <textarea rows="4" cols="15" ng-model="p.name">{{p.name}}</textarea>
+                </div>
+                <div class="col-md-4 numberic-input text-center">
+                  <p>
+                    销售价 : <i class="fa fa-jpy"></i><input type="input" readonly ng-model="p.price">
+                  </p>
+                  <p ng-repeat="w in channels">
+                    {{w | uppercase}} : <i class="fa fa-jpy"></i><input type="input" smart-float max-number="p.price" ng-model="p[w + 'Price']">
+                  </p>
+                </div>
+                <div class="col-md-8 numberic-input">
+                  <!-- 限购 -->
+                  <p>
+                    总购买限制<input type="input" ng-model="p.maxActStock" integer>
+                  </p>
+                  <p>
+                    单次最少购买<input type="input" integer min-number="defaultbuynumber" max-number="p.maxNumPerOrder" ng-model="p.minNumPerOrder">
+                    单次最多购买<input type="input" integer max-number="p.maxActStock" min-number="p.minNumPerOrder" ng-model="p.maxNumPerOrder">
+                  </p>
+                  <p>
+                    ID一天最多购买<input type="input" integer max-number="p.maxActStock" ng-model="p.maxNumPerIDOneday">
+                    ID总最多购买<input type="input" integer max-number="p.maxActStock" ng-model="p.maxNumPerIDTotal">
+                  </p>
+                </div>
+                <div class="col-md-2" style="padding-top: 20px;">
+                  <p ng-repeat="way in channels" ng-hide="way == 'app'">
+                     <strong class="text-info">{{way | uppercase}}:</strong>
+                     是<input type="radio" ng-model="p[way + 'PlaceHomePage']" integer value="1">
+                     否<input type="radio" ng-model="p[way + 'PlaceHomePage']" integer value="0">
+                  </p>
+                </div>
+                <div class="col-md-1">
+                  <span class="glyphicon btn-mx glyphicon-remove-circle" style="line-height: 100px;" ng-click="removeOne($index)"></span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12" ng-init="collapese=''">
+                  <button type="button" class="btn btn-link btn-sm" ng-click="collapese = collapese == p.id ? '' : p.id;getproducts(p.id)">
+                    <span class="glyphicon " ng-class="{true: 'glyphicon-minus', false: 'glyphicon-plus'}[collapese==p.id]"  aria-hidden="true"></span> 查看货品
+                  </button>
+                  <div uib-collapse="collapese!=p.id">
+                    <table class="table">
+                      <tr>
+                        <td>product_id</td>
+                        <td>规格/规格值</td>
+                        <td>销售价</td>
+                        <td>可用库存</td>
+                      </tr>
+                      <tr ng-repeat="pro in products[p.id]" class="info">
+                        <td>{{pro.product_id}}</td>
+                        <td>{{pro.product_sn}}</td>
+                        <td>{{pro.sale_price}}</td>
+                        <td>{{pro.quantity}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3">
+              <uib-pagination class="pagination-sm"  previous-text="上一页" next-text="下一页" total-items="pagination.total" ng-model="pagination.cpage" items-per-page="pagination.size" ng-change="pageChange()"></uib-pagination>
+
+            </td>
+            <td colspan="3">
+              <p style="margin: 20px 0;" class="numberic-input">
+                  每页显示<input type="text" min-number="pageMinSize" ng-model="pagination.size" integer>个商品
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6" class="text-center">
+              <a href="/activity/goods" class="btn btn-info btn-sm">
+                <i class="fa fa-angle-double-left"></i>上一步
+              </a>
+              <button type="button" class="btn btn-info btn-sm"  ng-click="nextStep()">
+                完成 <i class="fa fa-angle-double-right"></i>
+              </button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+    </div>
+  </div>
+</div>

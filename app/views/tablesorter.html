@@ -1,0 +1,10 @@
+<div class="table-sorter">
+  <button type="button" class="btn btn-sm"
+    ng-repeat="s in sorts"
+    ng-class="{true: 'btn-info', false: 'btn-default'}[s.value==sort]"
+    ng-click="goSort(s)"
+    >
+    {{s.name}}
+    <span class="glyphicon" ng-class="{true : 'glyphicon-arrow-down', false: 'glyphicon-arrow-up'}[s.desc]" aria-hidden="true"></span>
+  </button>
+</div>
