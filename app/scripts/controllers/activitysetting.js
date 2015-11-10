@@ -152,6 +152,7 @@ angular.module('presellFrontendApp')
 
     //弹出选择图片的modal
     $scope.open = function (method, index) {
+      index = $scope.pagination.size * ($scope.pagination.cpage - 1) + index;
       var modalInstance = $uibModal.open({
         templateUrl: 'uploadimg.html',
         controller: 'ImageuploadCtrl',

@@ -154,7 +154,7 @@
             <td >{{ a.statusDesc }}</td>
             <td>{{a.createAcctountName}}</td>
             <td>
-              <a href="/activity/base/{{a.id}}" class="btn btn-sm btn-link">编辑</a>
+              <a href="/activity/base/{{a.id}}" ng-show="a.enableEdit" class="btn btn-sm btn-link">编辑</a>
               <!-- <a href="/process" ng-show="a.enable" class="btn btn-sm btn-link">效果</a> -->
               <a ng-click="apply($index)" ng-hide="a.applyed" class="btn btn-sm btn-link">应用</a>
               <!-- <a ng-click="delete($index)" class="btn btn-sm btn-link">删除</a> -->

@@ -106,7 +106,7 @@
             <td >{{ a.statusDesc }}</td>
             <td>{{a.ad}}</td>
             <td>
-              <a href="/promotion/base/{{a.id}}" class="btn btn-sm btn-link">编辑</a>
+              <a href="/promotion/base/{{a.id}}" ng-show="a.enableEdit" class="btn btn-sm btn-link">编辑</a>
               <a ng-click="apply($index)" ng-hide="a.applyed" class="btn btn-sm btn-link">应用</a>
             </td>
           </tr>

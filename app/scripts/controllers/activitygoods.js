@@ -171,13 +171,17 @@ angular.module('presellFrontendApp')
         ids.push({id:$scope.selecteds[i].product_id, name: $scope.selecteds[i].product_name});
       }
 
-      httpService.post('aa/validateByStep', {step: 2, activity: $localStorage.activity.id, toolId: 12000, reqParams:{items: ids}})
-        .then(function(res) {
-          if (res) {
-            $localStorage.goods = $scope.selecteds;
-            delete $localStorage.accessedThree;
-            $location.path('/activity/setting');
-          }
-        });
+      httpService.post('aa/validateByStep', {
+        step: 2, id: $localStorage.activity.id,
+        startTime: $localStorage.activity.startTime,
+        endTime: $localStorage.activity.endTime,
+        toolId: 12000, reqParams: {items: ids}
+      }).then(function(res) {
+        if (res) {
+          $localStorage.goods = $scope.selecteds;
+          delete $localStorage.accessedThree;
+          $location.path('/activity/setting');
+        }
+      });
     }
   });
