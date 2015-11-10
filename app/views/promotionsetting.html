@@ -1,4 +1,5 @@
 <div class="presell-setting row">
+  <form novalidate name="form">
   <div class="col-md-10 col-md-offset-1">
     <div class="panel panel-primary">
       <div class="panel-heading">
@@ -31,13 +32,12 @@
             <a href="/promotion/goods" class="btn btn-info btn-sm">
               <i class="fa fa-angle-double-left"></i>上一步
             </a>
-            <button type="button" class="btn btn-info btn-sm"  ng-click="nextStep()">
+            <button type="submit" class="btn btn-info btn-sm"  ng-click="nextStep(form)">
               完成 <i class="fa fa-angle-double-right"></i>
             </button>
           </div>
         </div>
       </div>
-      <form novalidate name="form">
       <table class="table table-condensed table-hover setting-table promotion-tb">
         <thead>
           <tr>
@@ -136,15 +136,15 @@
                 <a href="/promotion/goods" class="btn btn-info btn-sm">
                   <i class="fa fa-angle-double-left"></i>上一步
                 </a>
-                <button type="button" class="btn btn-info btn-sm"  ng-click="nextStep(form)">
+                <button type="submit" class="btn btn-info btn-sm"  ng-click="nextStep(form)">
                   完成 <i class="fa fa-angle-double-right"></i>
                 </button>
               </td>
             </tr>
           </tfoot>
       </table>
-      </form>
     </div>
+    </form>
   </div>
 
   <script type="text/ng-template" id="batchSetPrice.html">
